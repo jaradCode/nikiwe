@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>A question for Nikiwe</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>🍳</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,700;12..96,800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #241033;
+    --glow: #3d1c55;
+    --ink: #f7eeff;
+    --muted: #b9a3cc;
+    --saffron: #ffc533;
+    --chili: #ff5a4e;
+    --mint: #6ee7b7;
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  *, *::before, *::after { box-sizing: inherit; }
+  [hidden] { display: none !important; }
+
+  html, body { height: 100%; margin: 0; }
+  body {
+    background: radial-gradient(120% 90% at 50% 20%, var(--glow) 0%, var(--bg) 62%);
+    color: var(--ink);
+    font-family: "Bricolage Grotesque", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    display: grid;
+    place-items: center;
+    overflow-x: hidden;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .stage {
+    width: min(92vw, 40rem);
+    text-align: center;
+    padding: 1.5rem 0;
+  }
+
+  .mood {
+    font-size: clamp(3.5rem, 16vw, 5.5rem);
+    line-height: 1;
+    margin-bottom: 0.75rem;
+    user-select: none;
+  }
+  .mood.pop { animation: pop 0.35s cubic-bezier(.3, 1.6, .5, 1); }
+  @keyframes pop {
+    0% { transform: scale(0.6) rotate(-8deg); }
+    100% { transform: scale(1) rotate(0); }
+  }
+
+  h1 {
+    margin: 0 0 0.6rem;
+    font-size: clamp(2.1rem, 8.5vw, 4.1rem);
+    font-weight: 800;
+    line-height: 1.04;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+  .lede {
+    margin: 0 auto;
+    max-width: 30rem;
+    color: var(--muted);
+    font-size: clamp(1rem, 3.6vw, 1.2rem);
+    line-height: 1.5;
+  }
+
+  .buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1.25rem;
+    padding: 2.6rem 0 1.6rem;
+    min-height: 9.5rem;
+  }
+
+  button, .btn {
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+    border: 0;
+    border-radius: 999px;
+    min-height: 3.25rem;
+    padding: 0.8rem 2rem;
+    font-size: 1.15rem;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  button:focus-visible, .btn:focus-visible {
+    outline: 3px solid var(--mint);
+    outline-offset: 4px;
+  }
+
+  #yes {
+    background: var(--saffron);
+    color: #2a1500;
+    transform: scale(var(--s, 1));
+    transition: transform 0.3s cubic-bezier(.3, 1.4, .5, 1);
+    box-shadow: 0 8px 0 #b57f00;
+  }
+  #yes:active { transform: scale(var(--s, 1)) translateY(4px); box-shadow: 0 4px 0 #b57f00; }
+
+  #no {
+    background: transparent;
+    color: var(--ink);
+    border: 2px solid rgba(247, 238, 255, 0.45);
+    transform: scale(var(--n, 1));
+    transition: transform 0.3s ease;
+  }
+  #no.floating {
+    position: fixed;
+    z-index: 50;
+    margin: 0;
+    transition: left 0.28s cubic-bezier(.2, 1.3, .4, 1), top 0.28s cubic-bezier(.2, 1.3, .4, 1), transform 0.3s ease;
+  }
+
+  #taunt {
+    min-height: 1.6em;
+    margin: 0;
+    font-size: clamp(1.05rem, 4vw, 1.3rem);
+    font-weight: 700;
+    color: var(--chili);
+  }
+  #count {
+    margin: 0.35rem 0 0;
+    min-height: 1.4em;
+    font-size: 0.95rem;
+    color: var(--muted);
+  }
+
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.7rem;
+    margin: 1.8rem 0 1.2rem;
+  }
+  .chip {
+    background: transparent;
+    color: var(--ink);
+    border: 2px solid rgba(247, 238, 255, 0.35);
+    padding: 0.6rem 1.2rem;
+    font-size: 1rem;
+  }
+  .chip[aria-pressed="true"] {
+    background: var(--mint);
+    border-color: var(--mint);
+    color: #06281c;
+  }
+  #order {
+    min-height: 1.6em;
+    margin: 0 0 1.2rem;
+    font-weight: 700;
+    color: var(--mint);
+  }
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.8rem;
+  }
+  .primary { background: var(--saffron); color: #2a1500; }
+  .ghost {
+    background: transparent;
+    color: var(--muted);
+    border: 2px solid rgba(247, 238, 255, 0.25);
+  }
+
+  #confetti {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 5;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .mood.pop { animation: none; }
+    #no.floating, #yes, #no { transition: none; }
+  }
+</style>
+</head>
+<body>
+
+<main id="card" class="stage">
+  <div id="mood" class="mood" aria-hidden="true">🍳</div>
+  <h1 id="question">Nikiwe, can you please cook for me?</h1>
+  <p class="lede">Please choose carefully. The kitchen is watching.</p>
+
+  <div class="buttons">
+    <button id="yes" type="button">Yes</button>
+    <button id="no" type="button">No</button>
+  </div>
+
+  <p id="taunt" aria-live="polite"></p>
+  <p id="count"></p>
+</main>
+
+<section id="result" class="stage" hidden>
+  <div class="mood pop" aria-hidden="true">🥳</div>
+  <h1 id="thanks">Thank you!</h1>
+  <p class="lede">The kitchen is officially yours. What is on the menu?</p>
+
+  <div class="chips" role="group" aria-label="Choose a menu">
+    <button class="chip" type="button" aria-pressed="false" data-pick="something spicy 🌶️">Something spicy 🌶️</button>
+    <button class="chip" type="button" aria-pressed="false" data-pick="something sweet 🍰">Something sweet 🍰</button>
+    <button class="chip" type="button" aria-pressed="false" data-pick="comfort food 🍲">Comfort food 🍲</button>
+    <button class="chip" type="button" aria-pressed="false" data-pick="a surprise 🎲">Surprise me 🎲</button>
+  </div>
+  <p id="order" aria-live="polite"></p>
+
+  <div class="actions">
+    <a id="wa" class="btn primary" target="_blank" rel="noopener" hidden>Send the good news 💬</a>
+    <button id="again" class="ghost" type="button">Throw confetti again</button>
+  </div>
+</section>
+
+<canvas id="confetti" aria-hidden="true"></canvas>
+
+<script>
+(() => {
+  /* ---------- Change these ---------- */
+  const CONFIG = {
+    name: "Nikiwe",
+    // Optional: digits only, with country code and no "+", e.g. "27821234567".
+    // Leave empty to hide the WhatsApp button.
+    whatsappNumber: "",
+    whatsappMessage: "Yes! I will cook for you 😄"
+  };
+  /* ---------------------------------- */
+
+  const $ = s => document.querySelector(s);
+  const card = $('#card'), result = $('#result');
+  const yes = $('#yes'), no = $('#no');
+  const mood = $('#mood'), taunt = $('#taunt'), count = $('#count');
+
+  $('#question').textContent = `${CONFIG.name}, can you please cook for me?`;
+  $('#thanks').textContent = `Thank you, ${CONFIG.name}!`;
+  document.title = `A question for ${CONFIG.name}`;
+
+  const taunts = [
+    "Nice try. 😏",
+    "Too slow!",
+    "That button is feeling shy.",
+    "Have you considered saying yes?",
+    "The No button has left the building.",
+    "I promise to wash the dishes. Probably.",
+    "Look how big the Yes button is getting...",
+    "You are wasting valuable dinner time.",
+    "The No button is tired now. 😮‍💨",
+    "Just one little yes. That is all.",
+    "The Yes button is basically begging.",
+    "This could go on all night, you know."
+  ];
+  const later = [
+    "Impressive commitment.",
+    "Your finger must be exhausted.",
+    "The No button is now a legend.",
+    "Still no? Bold.",
+    "Yes is right there. It has not moved once."
+  ];
+  const moods = [
+    [0, "🍳"], [1, "🥺"], [4, "😢"], [7, "😭"], [11, "🥹"], [16, "🤤"]
+  ];
+
+  let tries = 0, floating = false, lastDodge = 0, answered = false;
+  let pointer = { x: innerWidth / 2, y: innerHeight * 0.6 };
+
+  const overlaps = (a, b) =>
+    !(a.right < b.left || a.left > b.right || a.bottom < b.top || a.top > b.bottom);
+
+  function pop() {
+    mood.classList.remove('pop');
+    void mood.offsetWidth;
+    mood.classList.add('pop');
+  }
+
+  function update() {
+    taunt.textContent = tries <= taunts.length
+      ? taunts[tries - 1]
+      : later[Math.floor(Math.random() * later.length)];
+    count.textContent = tries === 1 ? "1 attempt to say no" : `${tries} attempts to say no`;
+
+    let face = moods[0][1];
+    for (const [from, emoji] of moods) if (tries >= from) face = emoji;
+    if (mood.textContent !== face) { mood.textContent = face; pop(); }
+
+    yes.style.setProperty('--s', Math.min(1 + tries * 0.05, 1.7).toFixed(2));
+    no.style.setProperty('--n', Math.max(1 - tries * 0.03, 0.6).toFixed(2));
+  }
+
+  function dodge(counts = true) {
+    if (answered) return;
+    if (counts) {
+      const now = performance.now();
+      if (now - lastDodge < 180) return;
+      lastDodge = now;
+    }
+
+    if (!floating) {
+      const r = no.getBoundingClientRect();
+      no.style.width = r.width + 'px';
+      no.style.height = r.height + 'px';
+      no.style.left = r.left + 'px';
+      no.style.top = r.top + 'px';
+      no.classList.add('floating');
+      floating = true;
+      void no.offsetWidth; // let the first jump animate
+    }
+
+    if (counts) { tries++; update(); }
+
+    const bw = no.offsetWidth, bh = no.offsetHeight, m = 10;
+    const yesRect = yes.getBoundingClientRect();
+    let best = null, bestDist = -1;
+
+    for (let i = 0; i < 50; i++) {
+      const x = m + Math.random() * Math.max(1, innerWidth - bw - 2 * m);
+      const y = m + Math.random() * Math.max(1, innerHeight - bh - 2 * m);
+      const box = { left: x, top: y, right: x + bw, bottom: y + bh };
+      if (overlaps(box, yesRect)) continue;
+      const d = Math.hypot(x + bw / 2 - pointer.x, y + bh / 2 - pointer.y);
+      if (d > bestDist) { bestDist = d; best = { x, y }; }
+      if (d > 200) break;
+    }
+    if (!best) best = { x: m, y: m };
+    no.style.left = best.x + 'px';
+    no.style.top = best.y + 'px';
+  }
+
+  const near = (e, pad) => {
+    const r = no.getBoundingClientRect();
+    return e.clientX > r.left - pad && e.clientX < r.right + pad &&
+           e.clientY > r.top - pad && e.clientY < r.bottom + pad;
+  };
+
+  // Mouse: run away before the cursor even arrives.
+  addEventListener('pointermove', e => {
+    pointer = { x: e.clientX, y: e.clientY };
+    if (e.pointerType === 'mouse' && !answered && near(e, 70)) dodge();
+  });
+  // Finger or mouse: jump the moment a press lands on or right beside it.
+  addEventListener('pointerdown', e => {
+    pointer = { x: e.clientX, y: e.clientY };
+    if (!answered && near(e, 40)) dodge();
+  });
+  no.addEventListener('touchstart', e => { e.preventDefault(); dodge(); }, { passive: false });
+  no.addEventListener('pointerenter', () => dodge());
+  no.addEventListener('focus', () => dodge());           // keyboard users cannot catch it either
+  no.addEventListener('click', e => { e.preventDefault(); dodge(); });
+  addEventListener('resize', () => { if (floating) dodge(false); });
+
+  /* ---------- Yes ---------- */
+  yes.addEventListener('click', () => {
+    answered = true;
+    card.hidden = true;
+    result.hidden = false;
+    confetti();
+
+    if (CONFIG.whatsappNumber) {
+      const wa = $('#wa');
+      wa.href = `https://wa.me/${CONFIG.whatsappNumber}?text=${encodeURIComponent(CONFIG.whatsappMessage)}`;
+      wa.hidden = false;
+    }
+  });
+
+  document.querySelectorAll('.chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      document.querySelectorAll('.chip').forEach(c => c.setAttribute('aria-pressed', 'false'));
+      chip.setAttribute('aria-pressed', 'true');
+      $('#order').textContent = `Order noted: ${chip.dataset.pick}. Chef ${CONFIG.name} has been informed. 👩‍🍳`;
+    });
+  });
+  $('#again').addEventListener('click', confetti);
+
+  /* ---------- Confetti ---------- */
+  const canvas = $('#confetti'), ctx = canvas.getContext('2d');
+  let run = 0;
+  function confetti() {
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const dpr = devicePixelRatio || 1, W = innerWidth, H = innerHeight;
+    canvas.width = W * dpr; canvas.height = H * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+    const colors = ['#ffc533', '#ff5a4e', '#6ee7b7', '#f7eeff', '#b58cff'];
+    const parts = Array.from({ length: 170 }, (_, i) => ({
+      x: W / 2 + (Math.random() - 0.5) * W * 0.3,
+      y: H * 0.55,
+      vx: (Math.random() - 0.5) * 16,
+      vy: -Math.random() * 16 - 6,
+      w: 6 + Math.random() * 6,
+      h: 8 + Math.random() * 8,
+      r: Math.random() * 6.28,
+      vr: (Math.random() - 0.5) * 0.4,
+      c: colors[i % colors.length]
+    }));
+
+    const id = ++run;
+    let frames = 0;
+    (function tick() {
+      if (id !== run) return;
+      ctx.clearRect(0, 0, W, H);
+      for (const p of parts) {
+        p.vy += 0.35; p.vx *= 0.99;
+        p.x += p.vx; p.y += p.vy; p.r += p.vr;
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate(p.r);
+        ctx.fillStyle = p.c;
+        ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+        ctx.restore();
+      }
+      if (++frames < 260) requestAnimationFrame(tick);
+      else ctx.clearRect(0, 0, W, H);
+    })();
+  }
+})();
+</script>
+</body>
+</html>
